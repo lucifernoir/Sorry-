@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Palak — A Little Sorry</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#e6f3ff;
+    --deep:#0f4c81;
+    --accent:#6fc3ff;
+    --card:#ffffff;
+    --muted:#567;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Montserrat,system-ui,Arial; background:linear-gradient(180deg,var(--bg), #cfeeff 80%); color:var(--deep);
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* container */
+  .wrap{max-width:900px;margin:20px auto;padding:18px;}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 10px 30px rgba(20,40,80,0.12);padding:18px;overflow:hidden}
+
+  /* header */
+  .header{display:flex;gap:12px;align-items:center}
+  .logo{
+    width:74px;height:74px;border-radius:18px;background:linear-gradient(135deg,var(--accent),#4aa3ff);
+    display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-family:Pacifico;font-size:28px;
+    box-shadow:0 6px 18px rgba(15,76,129,0.18);
+  }
+  .title{flex:1}
+  .title h1{margin:0;font-size:20px;color:var(--deep)}
+  .title p{margin:2px 0 0;color:var(--muted);font-size:13px}
+
+  /* layout */
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:16px}
+  @media(max-width:860px){ .grid{grid-template-columns:1fr} .right{order:2} .left{order:1} }
+
+  /* slideshow */
+  .slideshow{position:relative;border-radius:12px;overflow:hidden;height:420px;background:#000}
+  .slides{width:100%;height:100%;display:flex;transition:transform .6s ease}
+  .slide{min-width:100%;height:100%;background-size:cover;background-position:center}
+  .navs{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;pointer-events:none}
+  .btn{pointer-events:auto;background:rgba(255,255,255,0.12);border:none;padding:8px 10px;border-radius:10px;color:white;font-weight:600;backdrop-filter: blur(3px)}
+  .dots{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:8px}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer}
+  .dot.active{background:var(--accent);box-shadow:0 0 8px rgba(79,171,255,0.5)}
+
+  /* note */
+  .note{padding:14px;border-radius:10px;border:1px dashed rgba(15,76,129,0.08);background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(245,255,255,0.9));font-size:15px;line-height:1.6}
+  .note p{margin:10px 0}
+  .note .cute{font-family:Pacifico;color:var(--deep);font-size:20px;margin-top:8px}
+
+  /* music */
+  .music-row{display:flex;gap:10px;align-items:center;margin-top:12px}
+  .gram{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#4aa3ff);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;border:none;box-shadow:0 10px 20px rgba(79,171,255,0.18)}
+  .track{flex:1;font-size:13px;color:var(--muted)}
+
+  /* question card */
+  .question{margin-top:14px;padding:14px;border-radius:12px;background:linear-gradient(180deg,#f6fbff,#e8f6ff);text-align:center}
+  .question h3{margin:0 0 8px;font-size:16px;color:var(--deep)}
+  .choices{display:flex;gap:10px;justify-content:center;margin-top:10px}
+  .choice{padding:10px 14px;border-radius:10px;border:none;background:var(--deep);color:white;font-weight:700;cursor:pointer}
+  .choice.ghost{background:transparent;border:2px solid var(--deep);color:var(--deep)}
+
+  /* feedback */
+  .feedback{margin-top:12px;min-height:70px;display:flex;align-items:center;justify-content:center}
+  .yay{font-size:22px;color:#0b8b3a;font-weight:800}
+  .puppy{max-width:160px}
+
+  /* confetti pieces */
+  .confetti-piece{position:fixed;z-index:9999;pointer-events:none;mix-blend-mode:screen}
+
+  /* doodles */
+  .doodle{position:absolute;right:12px;top:8px;opacity:0.12;font-size:56px}
+
+  footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px;padding:14px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="card">
+    <div class="header">
+      <div class="logo">pb</div>
+      <div class="title">
+        <h1>Palak — this one’s from Madhur</h1>
+        <p>cute little page • blue vibes • a small sorry</p>
+      </div>
+      <div class="doodle">💙✨</div>
+    </div>
+
+    <div class="grid">
+      <!-- left: slideshow -->
+      <div class="left">
+        <div class="slideshow" id="slideshow">
+          <div class="slides" id="slides">
+            <!-- Replace the background-image URLs with your actual image filenames -->
+            <div class="slide" style="background-image:url('slide1.jpg')"></div>
+            <div class="slide" style="background-image:url('slide2.jpg')"></div>
+            <div class="slide" style="background-image:url('slide3.jpg')"></div>
+            <div class="slide" style="background-image:url('slide4.jpg')"></div>
+            <div class="slide" style="background-image:url('slide5.jpg')"></div>
+          </div>
+          <div class="navs">
+            <button class="btn" id="prev">◀</button>
+            <button class="btn" id="next">▶</button>
+          </div>
+          <div class="dots" id="dots">
+            <div class="dot" data-i="0"></div>
+            <div class="dot" data-i="1"></div>
+            <div class="dot" data-i="2"></div>
+            <div class="dot" data-i="3"></div>
+            <div class="dot" data-i="4"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: note + music + question -->
+      <div class="right">
+        <div class="note">
+          <p style="font-weight:700">Palak —</p>
+          <p>Hey, I’m writing this with slightly shaky fingers because I missed you and I was stupid. I questioned your absence when you needed space and I turned that worry into harsh words — for that, I'm really sorry.</p>
+          <p>I saw you online and I messed up by reacting before I understood. You deserve patience, not pressure. You deserve someone who trusts you instead of pulling at you. I promise to be that person.</p>
+          <p class="cute">Will you let me make it up to you? 🌸💙</p>
+
+          <div class="music-row">
+            <button class="gram" id="gramBtn">🎶</button>
+            <div class="track" id="trackTitle">play: sweet retro mix (tap the gramophone)</div>
+          </div>
+
+          <div class="question">
+            <h3>Tune mujhe maanf kiya?</h3>
+            <div class="choices">
+              <button class="choice" id="yesBtn">Haa 😊</button>
+              <button class="choice ghost" id="noBtn">Nahi 😢</button>
+            </div>
+            <div class="feedback" id="feedbackArea"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer>Made with ♥ by Madhur — small things, big apologies</footer>
+  </div>
+</div>
+
+<!-- audio element: replace the filename(s) with your actual audio -->
+<audio id="musicPlayer" loop>
+  <source src="sweet_retro_mix.mp3" type="audio/mpeg">
+  <!-- add fallback sources if you want -->
+</audio>
+
+<!-- optional crying puppy image to show on Nahi -->
+<img id="puppyImg" src="puppy.png" alt="puppy" style="display:none;position:fixed;right:18px;bottom:18px;width:160px;border-radius:12px;box-shadow:0 12px 30px rgba(10,40,80,0.2)">
+
+<script>
+  // SLIDESHOW
+  const slides = document.getElementById('slides');
+  const dots = document.querySelectorAll('.dot');
+  let idx = 0;
+  const total = slides.children.length;
+  function updateSlide(i){
+    idx = (i + total) % total;
+    slides.style.transform = `translateX(${-idx * 100}%)`;
+    dots.forEach(d=>d.classList.remove('active'));
+    dots[idx].classList.add('active');
+  }
+  document.getElementById('prev').onclick = ()=> updateSlide(idx-1);
+  document.getElementById('next').onclick = ()=> updateSlide(idx+1);
+  dots.forEach(d=>d.addEventListener('click',()=>updateSlide(parseInt(d.dataset.i))));
+  updateSlide(0);
+  // auto rotate
+  let auto = setInterval(()=>updateSlide(idx+1), 4200);
+  document.getElementById('slideshow').addEventListener('mouseenter', ()=> clearInterval(auto));
+  document.getElementById('slideshow').addEventListener('mouseleave', ()=> auto = setInterval(()=>updateSlide(idx+1), 4200));
+
+  // MUSIC / GRAM
+  const music = document.getElementById('musicPlayer');
+  const gram = document.getElementById('gramBtn');
+  const trackTitle = document.getElementById('trackTitle');
+  let playing=false;
+  gram.addEventListener('click', ()=>{
+    if(!playing){ music.play().catch(()=>{}); gram.textContent='⏸'; trackTitle.textContent='playing: sweet retro mix'; playing=true; }
+    else { music.pause(); gram.textContent='🎶'; trackTitle.textContent='paused'; playing=false; }
+  });
+
+  // YES / NO BUTTONS
+  const yes = document.getElementById('yesBtn');
+  const no = document.getElementById('noBtn');
+  const feedback = document.getElementById('feedbackArea');
+
+  // simple confetti generator
+  function popConfetti(){
+    const colors = ['#6fc3ff','#6fe4ff','#fff27a','#a6ffde','#ffd1f2'];
+    for(let i=0;i<40;i++){
+      const el = document.createElement('div');
+      el.className='confetti-piece';
+      el.style.left = (50 + (Math.random()-0.5)*60) + '%';
+      el.style.top = '-10%';
+      el.style.width = (8 + Math.random()*10) + 'px';
+      el.style.height = (8 + Math.random()*10) + 'px';
+      el.style.background = colors[Math.floor(Math.random()*colors.length)];
+      el.style.transform = `rotate(${Math.random()*360}deg)`;
+      el.style.opacity = '0.95';
+      document.body.appendChild(el);
+      // animate
+      const fall = el.animate([
+        { transform: `translateY(0) rotate(0)`, opacity:1 },
+        { transform: `translateY(${200 + Math.random()*600}px) rotate(${Math.random()*720}deg)`, opacity:0.9 }
+      ], { duration: 1800 + Math.random()*1400, easing: 'cubic-bezier(.2,.6,.2,1)'});
+      fall.onfinish = ()=> el.remove();
+    }
+  }
+
+  yes.addEventListener('click', ()=>{
+    feedback.innerHTML = `<div class="yay">YAYYYYYYYYYYYYY 🎉🎉🎉</div>`;
+    popConfetti();
+  });
+
+  // puppy animation for NO
+  const puppy = document.getElementById('puppyImg');
+  no.addEventListener('click', ()=>{
+    feedback.innerHTML = '';
+    puppy.style.display='block';
+    puppy.style.opacity=0;
+    puppy.style.transform='translateY(40px) scale(.9)';
+    setTimeout(()=>{ puppy.style.transition='all .6s cubic-bezier(.2,.9,.3,1)'; puppy.style.opacity=1; puppy.style.transform='translateY(0) scale(1)'; },20);
+    // optional tiny shake after 2.5s
+    setTimeout(()=>{ puppy.style.transform='translateY(0) scale(1.02)'; setTimeout(()=> puppy.style.transform='translateY(0) scale(1)',160); },2600);
+  });
+
+  // Close puppy on click
+  puppy.addEventListener('click', ()=>{ puppy.style.transition='all .3s ease'; puppy.style.opacity=0; setTimeout(()=> puppy.style.display='none',320); });
+
+  // Accessibility note: allow keyboard activation
+  yes.addEventListener('keyup', (e)=>{ if(e.key==='Enter') yes.click() });
+  no.addEventListener('keyup', (e)=>{ if(e.key==='Enter') no.click() });
+
+  // Preload hint: swap your actual image filenames into the slide divs (slide1.jpg etc.)
+</script>
+
+</body>
+</html>
